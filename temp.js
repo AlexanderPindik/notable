@@ -1,47 +1,19 @@
-//find One
-        app.get('/notes/:id', (req, res)=>{
-                const id =req.params.id;
-                const details ={'_id': new ObjectId(id)}
-                db.collection('notes').findOne(details, (err, item)=>{
-                    if(err)
-                    {
-                        res.send({'error':"An error has occured"})
-                    }
-                    else
-                    {
-                        res.send(item)
-                    }
-                });
-            });
-            //update rout
-            app.put('/notes/:id', (req, res)=>{
-                const id =req.params.id;
-                const details ={'_id': new ObjectId(id)}
-                const note ={text: req.body.body, title: req.body.title};
-                db.collection('notes').update(details, note, (err, item)=>{
-                    if(err)
-                    {
-                        res.send({'error':"An error has occured"})
-                    }
-                    else
-                    {
-                        res.send(item)
-                    }
-                });
-            });
+// Создаём объект запроса
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var request = new XMLHttpRequest();
+console.log('засылаем запрос серверу ');
+ // Указываем тип запроса (GET) и адрес, к которому будет выполнятся запрос
+var url = "http://localhost:8000/notes/my";
+request.open("GET", url, true);
+request.send();
+// Задаём функцию, которая будет вызываться при изменении состояния готовности запроса
+request.onreadystatechange = function () { 
+    // Проверяем состояние готовности и статус запроса
+    if (request.readyState === 4 && request.status === 200) { 
+        // Десериализуем полученную JSON строку в объект JavaScript
+       // var response = JSON.parse(request.responseText); 
+        console.log('ответ сервера '+ JSON.stringify(request.responseText));
+    }
+}
 
-            //delete route
-            app.delete('/notes/:id', (req, res)=>{
-                const id =req.params.id;
-                const details ={'_id': new ObjectId(id)}
-                db.collection('notes').remove(details, (err, item)=>{
-                    if(err)
-                    {
-                        res.send({'error':"An error has occured"})
-                    }
-                    else
-                    {
-                        res.send("Note "+id+"deleted!")
-                    }
-                });
-            });
+

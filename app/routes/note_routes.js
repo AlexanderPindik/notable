@@ -2,9 +2,13 @@ var ObjectId = require('mongodb').ObjectID;
  module.exports= function (app, client) {
         var db = client.db('notable');
         //find One
-        app.get('/notes/:id', (req, res)=>{
-                const id =req.params.id;
-                const details ={'_id': new ObjectId(id)}
+        app.get('/notes/:title', (req, res)=>{
+                //const id =req.params.id;
+                const title =req.params.title;
+                //const details ={'_id': new ObjectId(id)}
+                //var titlereg1="/"+ title +"*/";
+                var titlereg = new RegExp(title+"*");
+                const details ={'title': titlereg}
                 db.collection('notes').findOne(details, (err, item)=>{
                     if(err)
                     {
